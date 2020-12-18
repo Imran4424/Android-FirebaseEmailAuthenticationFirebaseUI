@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Choose authentication builder
             List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
+
             );
 
             startActivityForResult(
                     AuthUI.getInstance()
                     .createSignInIntentBuilder()
-                    .setDefaultProvider(providers.get(0))
+                    .setAvailableProviders(providers)
                     .build(),
                     SIGIN_REQUEST_CODE
             );
