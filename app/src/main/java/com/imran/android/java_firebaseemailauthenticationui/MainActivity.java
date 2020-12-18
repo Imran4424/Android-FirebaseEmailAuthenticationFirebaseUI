@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signUp(View view) {
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
