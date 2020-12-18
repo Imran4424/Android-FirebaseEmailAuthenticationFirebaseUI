@@ -7,28 +7,16 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/buttonSignUp"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:onClick="signUp"
-        android:text="Sign Up"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSigningStatus" />
-
-    <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="128dp"
         android:onClick="signIn"
         android:text="SIGN IN"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUser" />
 
     <Button
         android:id="@+id/buttonSignOut"
@@ -56,4 +44,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="No User"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSigningStatus" />
 </androidx.constraintlayout.widget.ConstraintLayout>
