@@ -6,10 +6,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,13 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null) {
             // already signed in
-            textSigningStatus.setText("Signed In");
-            setCurrentUserName();
+            updateSignedIn();
         } else {
             // not signed in
-            textSigningStatus.setText("Signed Out");
-            textUser.setText("No User");
+            updateSignedOut();
         }
+    }
+
+    private void updateSignedOut() {
+        textSigningStatus.setText("Signed Out");
+        textUser.setText("No User");
     }
 
     @Override
@@ -50,14 +56,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == SIGIN_REQUEST_CODE) {
             // successfully signed in
             if (resultCode == RESULT_OK) {
-                textSigningStatus.setText("SIGNED IN");
                 // user
-                setCurrentUserName();
+                updateSignedIn();
 
                 Toast.makeText(this, "Successfully Signed In", Toast.LENGTH_SHORT).show();
             } else {
                 // sign in failed
-
                 Toast.makeText(this, "Unable to Sign In", Toast.LENGTH_SHORT).show();
             }
         }
@@ -68,14 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null) {
             // already signed in
-            textSigningStatus.setText("Signed In");
             Toast.makeText(this,
                     "User already signed in, must sign out first",
                     Toast.LENGTH_SHORT).show();
         } else {
             // Choose authentication builder
             List<AuthUI.IdpConfig> providers = Arrays.asList(
-
+                    new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
             startActivityForResult(
@@ -89,12 +92,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signOut(View view) {
-
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // user is signed out
+                        updateSignedOut();
+                        Toast.makeText(getApplicationContext(), "User Signed Out", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public void setCurrentUserName() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    public void updateSignedIn() {
+        textSigningStatus.setText("SIGNED IN");
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         textUser.setText(currentUser.getDisplayName());
     }
 }
