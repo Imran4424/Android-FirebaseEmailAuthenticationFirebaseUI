@@ -1,19 +1,23 @@
 package com.imran.android.java_firebaseemailauthenticationui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private final int SIGIN_REQUEST_CODE = 1234;
     String TAG = "EmailUI_Auth";
     TextView textSigningStatus;
 
@@ -39,6 +43,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SIGIN_REQUEST_CODE) {
+            // successfully signed in
+            if (resultCode == RESULT_OK) {
+                textSigningStatus.setText("SIGNED IN");
+                // user
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                Toast.makeText(this, "Successfully Signed In", Toast.LENGTH_SHORT).show();
+            } else {
+                // sign in failed
+
+                Toast.makeText(this, "Unable to Sign In", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public void signIn(View view) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -59,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     .createSignInIntentBuilder()
                     .setDefaultProvider(providers.get(0))
                     .build(),
-                   1234
+                    SIGIN_REQUEST_CODE
             );
         }
     }
