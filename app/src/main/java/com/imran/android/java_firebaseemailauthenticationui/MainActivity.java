@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private final int SIGIN_REQUEST_CODE = 1234;
     String TAG = "EmailUI_Auth";
     TextView textSigningStatus;
+    TextView textUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +28,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textSigningStatus = findViewById(R.id.textViewSigningStatus);
+        textUser = findViewById(R.id.textViewUser);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
             // already signed in
             textSigningStatus.setText("Signed In");
+            setCurrentUserName();
         } else {
             // not signed in
             textSigningStatus.setText("Signed Out");
+            textUser.setText("No User");
         }
     }
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 textSigningStatus.setText("SIGNED IN");
                 // user
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                setCurrentUserName();
 
                 Toast.makeText(this, "Successfully Signed In", Toast.LENGTH_SHORT).show();
             } else {
@@ -90,5 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void signOut(View view) {
 
+    }
+
+    public void setCurrentUserName() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        textUser.setText(currentUser.getDisplayName());
     }
 }
