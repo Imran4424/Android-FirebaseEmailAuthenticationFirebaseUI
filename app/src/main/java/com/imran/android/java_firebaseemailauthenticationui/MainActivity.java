@@ -104,6 +104,21 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public void deleteUser(View view) {
+        AuthUI.getInstance()
+                .delete(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Delete succeeded
+                        } else {
+                            // deletion failed
+                        }
+                    }
+                });
+    }
+
     public void updateSignedIn() {
         textSigningStatus.setText("SIGNED IN");
 
