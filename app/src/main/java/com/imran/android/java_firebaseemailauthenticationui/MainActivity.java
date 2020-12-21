@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -130,5 +131,13 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         textUser.setText(currentUser.getDisplayName());
+    }
+
+    public void dynamicLinkSignIn(View view) {
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setAndroidPackageName(getPackageName(), true, null)
+                .setHandleCodeInApp(true)
+                .setUrl("https://dynamic.auth.example.com/emailSignInLink")
+                .build();
     }
 }
