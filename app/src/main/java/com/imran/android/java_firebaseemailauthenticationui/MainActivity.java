@@ -135,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void dynamicLinkSignIn(View view) {
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setAndroidPackageName(getPackageName(), true, null)
+                .setAndroidPackageName(getPackageName(),
+                        true, // install if not available
+                        null) // minimum app version
                 .setHandleCodeInApp(true)
                 .setUrl("https://dynamic.auth.example.com/emailSignInLink")
                 .build();
