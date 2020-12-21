@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private final int SIGIN_REQUEST_CODE = 1234;
-    private final int LINK_SIGIN_REQUEST_CODE = 12345;
+    private final int SIGNIN_REQUEST_CODE = 1234;
+    private final int LINK_SIGNIN_REQUEST_CODE = 12345;
     String TAG = "EmailUI_Auth";
     TextView textSigningStatus;
     TextView textUser;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SIGIN_REQUEST_CODE) {
+        if (requestCode == SIGNIN_REQUEST_CODE) {
             // successfully signed in
             if (resultCode == RESULT_OK) {
                 // user
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
                     .build(),
-                    SIGIN_REQUEST_CODE
+                    SIGNIN_REQUEST_CODE
             );
         }
     }
