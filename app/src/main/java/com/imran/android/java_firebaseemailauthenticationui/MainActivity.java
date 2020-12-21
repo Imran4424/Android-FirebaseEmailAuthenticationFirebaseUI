@@ -22,6 +22,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private final int SIGIN_REQUEST_CODE = 1234;
+    private final int LINK_SIGIN_REQUEST_CODE = 12345;
     String TAG = "EmailUI_Auth";
     TextView textSigningStatus;
     TextView textUser;
