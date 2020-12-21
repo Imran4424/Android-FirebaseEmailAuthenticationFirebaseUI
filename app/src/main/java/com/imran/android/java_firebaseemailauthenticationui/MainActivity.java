@@ -142,5 +142,18 @@ public class MainActivity extends AppCompatActivity {
                 .setHandleCodeInApp(true)
                 .setUrl("https://dynamic.auth.example.com/emailSignInLink")
                 .build();
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig
+                        .EmailBuilder()
+                        .enableEmailLinkSignIn()
+                        .setActionCodeSettings(actionCodeSettings)
+                        .build()
+                ))
+                .build(),
+                LINK_SIGNIN_REQUEST_CODE
+        );
     }
 }
