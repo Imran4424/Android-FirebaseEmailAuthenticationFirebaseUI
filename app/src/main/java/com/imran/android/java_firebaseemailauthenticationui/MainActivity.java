@@ -2,6 +2,7 @@ package com.imran.android.java_firebaseemailauthenticationui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,26 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+        if (AuthUI.canHandleIntent(getIntent())) {
+            String link = getIntent().getData().toString();
+
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build()
+            );
+            Log.d("LINK SIGN IN", "got an email link" + link);
+
+            if (link != null) {
+                startActivityForResult(
+                        AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setEmailLink(link)
+                            .setAvailableProviders(providers)
+                            .build(),
+                        LINK_SIGNIN_REQUEST_CODE
+                );
+            }
+        }
+
         if (firebaseAuth.getCurrentUser() != null) {
             // already signed in
             updateSignedIn();
@@ -57,15 +78,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == SIGNIN_REQUEST_CODE) {
             // successfully signed in
-            if (resultCode == RESULT_OK) {
-                // user
-                updateSignedIn();
+            checkSignIn(resultCode);
+        } else if (requestCode == LINK_SIGNIN_REQUEST_CODE) {
+            checkSignIn(requestCode);
+        }
+    }
 
-                Toast.makeText(this, "Successfully Signed In", Toast.LENGTH_SHORT).show();
-            } else {
-                // sign in failed
-                Toast.makeText(this, "Unable to Sign In", Toast.LENGTH_SHORT).show();
-            }
+    private void checkSignIn(int requestCode) {
+        if (requestCode == RESULT_OK) {
+            // user
+            updateSignedIn();
+
+            Toast.makeText(this, "Successfully Signed In", Toast.LENGTH_SHORT).show();
+        } else {
+            // sign in failed
+            Toast.makeText(this, "Unable to Sign In", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -89,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
             startActivityForResult(
                     AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build(),
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
                     SIGNIN_REQUEST_CODE
             );
         }
@@ -145,14 +172,14 @@ public class MainActivity extends AppCompatActivity {
 
         startActivityForResult(
                 AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig
-                        .EmailBuilder()
-                        .enableEmailLinkSignIn()
-                        .setActionCodeSettings(actionCodeSettings)
-                        .build()
-                ))
-                .build(),
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig
+                            .EmailBuilder()
+                            .enableEmailLinkSignIn()
+                            .setActionCodeSettings(actionCodeSettings)
+                            .build()
+                    ))
+                    .build(),
                 LINK_SIGNIN_REQUEST_CODE
         );
     }
